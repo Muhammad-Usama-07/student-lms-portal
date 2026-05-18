@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Overview Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark: #5aab00;
+      --green-mid:  #72c900;
+      --green-light:#c8f060;
+      --sidebar-bg: #5aab00;
+      --header-bg:  #c8f060;
+      --white:      #ffffff;
+      --card-bg:    #f5f5f5;
+      --grade-green:#6cc000;
+      --grade-orange:#e07000;
+      --grade-red:  #c83030;
+      --text-dark:  #1a1a1a;
+      --text-mid:   #444;
+      --text-light: #fff;
+      --bar1: #f5a623;
+      --bar2: #f06292;
+      --bar3: #ce93d8;
+      --bar4: #7e57c2;
+      --bar5: #4527a0;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #e8f5e9;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 200px;
+      min-width: 200px;
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 0 20px;
+      gap: 10px;
+      box-shadow: 4px 0 18px rgba(0,0,0,.15);
+    }
+
+    .avatar-wrap {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+      flex-shrink: 0;
+    }
+
+    .avatar-wrap svg {
+      width: 96px;
+      height: 96px;
+    }
+
+    .student-name {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      text-align: center;
+      padding: 0 12px;
+    }
+
+    .divider {
+      width: 70%;
+      height: 1px;
+      background: rgba(255,255,255,.35);
+      margin: 6px 0;
+    }
+
+    .nav-items {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: 0 14px;
+      margin-top: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,.18); }
+    .nav-item.active { background: rgba(255,255,255,.22); }
+
+    .nav-item svg {
+      width: 34px;
+      height: 34px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .nav-label {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    /* ── MAIN AREA ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--header-bg);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+      flex-shrink: 0;
+    }
+
+    .header h1 {
+      font-family: 'Bangers', cursive;
+      font-size: 38px;
+      letter-spacing: 1.5px;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    .profile-icon {
+      width: 38px;
+      height: 38px;
+      stroke: #1a1a1a;
+      stroke-width: 1.8;
+      fill: none;
+      cursor: pointer;
+    }
+
+    /* CONTENT */
+    .content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 18px 22px;
+      overflow-y: auto;
+    }
+
+    /* LEFT COLUMN */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+
+    .card-title {
+      font-family: 'Bangers', cursive;
+      font-size: 24px;
+      letter-spacing: .8px;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    /* ── BAR CHART ── */
+    .chart-area {
+      position: relative;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      gap: 22px;
+      padding: 0 8px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .bar-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .bar-value {
+      font-size: 11px;
+      font-weight: 800;
+      color: #f5a623;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .bar {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      transition: opacity .2s;
+      min-height: 20px;
+    }
+
+    .bar:hover { opacity: .85; }
+
+    .bar-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #888;
+      margin-top: 6px;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    /* trend line overlay */
+    .chart-wrap { position: relative; }
+
+    .trend-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 200px;
+      pointer-events: none;
+    }
+
+    /* ── GRADES ── */
+    .grades-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .grade-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .grade-subject {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .grade-badge {
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .grade-badge.good    { background: var(--grade-green); }
+    .grade-badge.average { background: var(--grade-orange); }
+    .grade-badge.low     { background: var(--grade-red); }
+
+    /* ── NOTIFICATIONS ── */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notif-card {
+      flex: 1;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 20px 0 20px 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .notif-title {
+      font-family: 'Bangers', cursive;
+      font-size: 26px;
+      letter-spacing: .8px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+      padding-right: 22px;
+    }
+
+    .notif-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dark) #e0e0e0;
+    }
+
+    .notif-scroll::-webkit-scrollbar { width: 10px; }
+    .notif-scroll::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
+    .notif-scroll::-webkit-scrollbar-thumb {
+      background: var(--green-dark);
+      border-radius: 10px;
+    }
+
+    .notif-item {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-mid);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <!-- Cartoon avatar -->
+  <div class="avatar-wrap">
+    <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+      <!-- face -->
+      <circle cx="48" cy="56" r="32" fill="#ffe0b2"/>
+      <!-- hair -->
+      <path d="M18 46 Q20 18 48 18 Q76 18 78 46 Q72 30 60 28 Q48 24 36 28 Q24 30 18 46Z" fill="#2a1a00"/>
+      <path d="M18 46 Q14 52 16 58 Q20 44 24 42Z" fill="#2a1a00"/>
+      <!-- eyes -->
+      <ellipse cx="38" cy="54" rx="5" ry="6" fill="#fff"/>
+      <ellipse cx="58" cy="54" rx="5" ry="6" fill="#fff"/>
+      <circle cx="39" cy="55" r="3" fill="#3e2000"/>
+      <circle cx="59" cy="55" r="3" fill="#3e2000"/>
+      <circle cx="40" cy="53.5" r="1" fill="#fff"/>
+      <circle cx="60" cy="53.5" r="1" fill="#fff"/>
+      <!-- eyebrows -->
+      <path d="M33 47 Q38 44 43 47" stroke="#5d3a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M53 47 Q58 44 63 47" stroke="#5d3a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- smile -->
+      <path d="M38 68 Q48 78 58 68" stroke="#c0392b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- cheeks -->
+      <circle cx="33" cy="66" r="6" fill="#ffb3a7" opacity=".5"/>
+      <circle cx="63" cy="66" r="6" fill="#ffb3a7" opacity=".5"/>
+      <!-- ear -->
+      <ellipse cx="16" cy="58" rx="5" ry="7" fill="#ffe0b2"/>
+      <ellipse cx="80" cy="58" rx="5" ry="7" fill="#ffe0b2"/>
+    </svg>
+  </div>
+
+  <p class="student-name">Student Name</p>
+  <div class="divider"></div>
+
+  <nav class="nav-items">
+    <!-- Dashboard -->
+    <div class="nav-item active">
+      <svg viewBox="0 0 36 36"><rect x="4" y="4" width="12" height="8" rx="2"/><rect x="4" y="16" width="12" height="16" rx="2"/><rect x="20" y="4" width="12" height="16" rx="2"/><rect x="20" y="24" width="12" height="8" rx="2"/></svg>
+      <span class="nav-label">DashBoard</span>
+    </div>
+    <!-- Courses -->
+    <div class="nav-item">
+      <svg viewBox="0 0 36 36"><rect x="4" y="6" width="28" height="22" rx="3"/><path d="M10 14h16M10 20h10"/><circle cx="26" cy="22" r="5" fill="var(--sidebar-bg)" stroke="#fff" stroke-width="1.5"/><path d="M24 22l1.5 1.5L28 20" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="nav-label">Courses</span>
+    </div>
+    <!-- Notes -->
+    <div class="nav-item">
+      <svg viewBox="0 0 36 36"><rect x="8" y="4" width="20" height="28" rx="3"/><path d="M13 12h10M13 18h10M13 24h6"/></svg>
+      <span class="nav-label">Notes</span>
+    </div>
+    <!-- Performance -->
+    <div class="nav-item">
+      <svg viewBox="0 0 36 36"><polyline points="4,28 12,18 18,22 26,10 32,14"/><polyline points="28,10 32,10 32,14"/></svg>
+      <span class="nav-label">Performance</span>
+    </div>
+  </nav>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <!-- Header -->
+  <header class="header">
+    <h1>Student Overview</h1>
+    <svg class="profile-icon" viewBox="0 0 38 38">
+      <circle cx="19" cy="13" r="7"/>
+      <path d="M5 34c0-7.7 6.3-14 14-14s14 6.3 14 14" stroke-linecap="round"/>
+    </svg>
+  </header>
+
+  <!-- Content Grid -->
+  <div class="content">
+
+    <!-- LEFT -->
+    <div class="left-col">
+
+      <!-- Monthly Performance -->
+      <div class="card">
+        <div class="card-title">Monthly Performance</div>
+        <div class="chart-wrap">
+          <div class="chart-area" id="chartArea">
+            <div class="bar-group">
+              <span class="bar-value">+12.2</span>
+              <div class="bar" style="height:70px; background: linear-gradient(180deg,#f5a623,#e67e00);"></div>
+              <span class="bar-label">January</span>
+            </div>
+            <div class="bar-group">
+              <span class="bar-value">+23.5</span>
+              <div class="bar" style="height:100px; background: linear-gradient(180deg,#f48fb1,#e91e63);"></div>
+              <span class="bar-label">February</span>
+            </div>
+            <div class="bar-group">
+              <span class="bar-value">+32.5</span>
+              <div class="bar" style="height:128px; background: linear-gradient(180deg,#ce93d8,#9c27b0);"></div>
+              <span class="bar-label">March</span>
+            </div>
+            <div class="bar-group">
+              <span class="bar-value">+43.3</span>
+              <div class="bar" style="height:155px; background: linear-gradient(180deg,#9575cd,#5e35b1);"></div>
+              <span class="bar-label">April</span>
+            </div>
+            <div class="bar-group">
+              <span class="bar-value">+55.5</span>
+              <div class="bar" style="height:190px; background: linear-gradient(180deg,#7e57c2,#311b92);"></div>
+              <span class="bar-label">June</span>
+            </div>
+          </div>
+          <!-- Trend line -->
+          <svg class="trend-svg" viewBox="0 0 520 200" preserveAspectRatio="none">
+            <polyline
+              points="48,148 148,118 248,90 348,62 448,28"
+              fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="none"/>
+            <circle cx="48"  cy="148" r="5" fill="#f5a623"/>
+            <circle cx="148" cy="118" r="5" fill="#f06292"/>
+            <circle cx="248" cy="90"  r="5" fill="#ba68c8"/>
+            <circle cx="348" cy="62"  r="5" fill="#7e57c2"/>
+            <circle cx="448" cy="28"  r="6" fill="#673ab7"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Recent Grades -->
+      <div class="card">
+        <div class="card-title">Recent Grades</div>
+        <div class="grades-list">
+          <div class="grade-row">
+            <span class="grade-subject">Mathematics (Theory)</span>
+            <span class="grade-badge good">8.4</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Chemistry (Theory &amp; Practical)</span>
+            <span class="grade-badge average">6.3</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Physics (Theory &amp; Practical)</span>
+            <span class="grade-badge low">3.6</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left-col -->
+
+    <!-- RIGHT: Notifications -->
+    <div class="right-col">
+      <div class="notif-card">
+        <div class="notif-title">Notification</div>
+        <div class="notif-scroll">
+          <div class="notif-item">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</div>
+          <div class="notif-item">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</div>
+          <div class="notif-item">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</div>
+          <div class="notif-item">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</div>
+          <div class="notif-item">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</div>
+        </div>
+      </div>
+    </div><!-- /right-col -->
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+</body>
+</html>
