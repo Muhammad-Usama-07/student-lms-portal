@@ -256,7 +256,16 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      max-height: 210px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dark) #e0e0e0;
     }
+
+    .grades-list::-webkit-scrollbar { width: 8px; }
+    .grades-list::-webkit-scrollbar-track { background: #e0e0e0; border-radius: 10px; }
+    .grades-list::-webkit-scrollbar-thumb { background: var(--green-dark); border-radius: 10px; }
 
     .grade-row {
       display: flex;
@@ -470,12 +479,40 @@
         <div class="card-title">Recent Grades</div>
         <div class="grades-list">
           <div class="grade-row">
+            <span class="grade-subject">Computer Science</span>
+            <span class="grade-badge good">9.5</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Biology (Theory &amp; Practical)</span>
+            <span class="grade-badge good">9.1</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Physical Education</span>
+            <span class="grade-badge good">8.9</span>
+          </div>
+          <div class="grade-row">
             <span class="grade-subject">Mathematics (Theory)</span>
             <span class="grade-badge good">8.4</span>
           </div>
           <div class="grade-row">
+            <span class="grade-subject">English Literature</span>
+            <span class="grade-badge good">7.8</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Geography</span>
+            <span class="grade-badge average">6.7</span>
+          </div>
+          <div class="grade-row">
             <span class="grade-subject">Chemistry (Theory &amp; Practical)</span>
             <span class="grade-badge average">6.3</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">History &amp; Civics</span>
+            <span class="grade-badge average">5.9</span>
+          </div>
+          <div class="grade-row">
+            <span class="grade-subject">Economics</span>
+            <span class="grade-badge low">4.2</span>
           </div>
           <div class="grade-row">
             <span class="grade-subject">Physics (Theory &amp; Practical)</span>
