@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # EduNest Apps
+    # school_lms_portal Apps
     'accounts',
     'lms',
     'portal',
