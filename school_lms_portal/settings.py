@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-this-in-production-edunest-2024'
+SECRET_KEY = 'django-insecure-change-this-in-production-school_lms_portal-2024'
 
 DEBUG = True
 
@@ -32,7 +32,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'edunest.urls'
+ROOT_URLCONF = 'school_lms_portal.urls'
 
 TEMPLATES = [
     {
@@ -50,7 +50,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'edunest.wsgi.application'
+WSGI_APPLICATION = 'school_lms_portal.wsgi.application'
 
 DATABASES = {
     'default': {
