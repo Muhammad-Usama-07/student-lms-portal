@@ -1,0 +1,135 @@
+{% extends 'core/base.html' %}
+{% block title %}Teacher Dashboard — school_lms_portal{% endblock %}
+{% block page_title %}Teacher Overview{% endblock %}
+
+{% block header_actions %}
+<div class="header-actions">
+  <a href="{% url 'assignment_create' %}" class="btn btn-sm btn-primary">+ Assignment</a>
+  <a href="{% url 'quiz_create' %}" class="btn btn-sm btn-secondary">+ Quiz</a>
+  <a href="{% url 'live_class_create' %}" class="btn btn-sm btn-success">+ Live Class</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Stats Row -->
+<div class="stats-row">
+  <div class="stat-box">
+    <span class="stat-num">{{ courses.count }}</span>
+    <span class="stat-label">Courses</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num">{{ total_students }}</span>
+    <span class="stat-label">Students</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num">{{ assignments.count }}</span>
+    <span class="stat-label">Assignments</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num">{{ quizzes.count }}</span>
+    <span class="stat-label">Quizzes</span>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="left-col">
+
+    <!-- Pending Submissions -->
+    <div class="card">
+      <div class="card-title">Pending Submissions</div>
+      {% for sub in pending_subs %}
+      <div class="sub-row">
+        <div class="sub-info">
+          <strong>{{ sub.student.get_full_name|default:sub.student.username }}</strong>
+          <span>{{ sub.assignment.title }}</span>
+          <small>{{ sub.submitted_at|timesince }} ago</small>
+        </div>
+        <form method="post" action="{% url 'grade_submission' sub.pk %}" class="grade-inline">
+          {% csrf_token %}
+          <input type="number" name="marks" placeholder="Marks" min="0" max="{{ sub.assignment.total_marks }}" class="marks-input" required/>
+          <button type="submit" class="btn btn-sm btn-primary">Grade</button>
+        </form>
+      </div>
+      {% empty %}
+      <p class="empty-state">🎉 No pending submissions!</p>
+      {% endfor %}
+    </div>
+
+    <!-- Recent Assignments -->
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">Recent Assignments</div>
+        <a href="{% url 'assignments_list' %}" class="see-all">See All →</a>
+      </div>
+      {% for asgn in assignments %}
+      <div class="list-row">
+        <div>
+          <strong>{{ asgn.title }}</strong>
+          <span class="text-muted">{{ asgn.course.code }}</span>
+        </div>
+        <span class="due-date {% if asgn.due_date < now %}overdue{% endif %}">
+          Due: {{ asgn.due_date|date:"M d, Y" }}
+        </span>
+      </div>
+      {% empty %}
+      <p class="empty-state">No assignments yet. <a href="{% url 'assignment_create' %}">Create one</a></p>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <div class="right-col">
+
+    <!-- Upcoming Live Classes -->
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">Live Classes</div>
+        <a href="{% url 'live_class_create' %}" class="see-all">+ New</a>
+      </div>
+      {% for cls in live_classes %}
+      <div class="upcoming-item">
+        <div class="upcoming-info">
+          <strong>{{ cls.title }}</strong>
+          <span>{{ cls.course.code }} · {{ cls.date }} {{ cls.start_time }}</span>
+          {% if cls.meet_link %}<a href="{{ cls.meet_link }}" target="_blank" class="join-link">Join ↗</a>{% endif %}
+        </div>
+        <div class="status-actions">
+          <span class="status-badge status-{{ cls.status }}">{{ cls.get_status_display }}</span>
+          <form method="post" action="{% url 'live_class_status' cls.pk %}">
+            {% csrf_token %}
+            <select name="status" onchange="this.form.submit()" class="status-select">
+              <option value="scheduled" {% if cls.status == 'scheduled' %}selected{% endif %}>Scheduled</option>
+              <option value="live"      {% if cls.status == 'live'      %}selected{% endif %}>Live Now</option>
+              <option value="completed" {% if cls.status == 'completed' %}selected{% endif %}>Completed</option>
+              <option value="cancelled" {% if cls.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      {% empty %}
+      <p class="empty-state">No live classes. <a href="{% url 'live_class_create' %}">Schedule one</a></p>
+      {% endfor %}
+    </div>
+
+    <!-- Recent Quizzes -->
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">Recent Quizzes</div>
+        <a href="{% url 'quiz_create' %}" class="see-all">+ New</a>
+      </div>
+      {% for quiz in quizzes %}
+      <div class="list-row">
+        <div>
+          <strong>{{ quiz.title }}</strong>
+          <span class="text-muted">{{ quiz.course.code }} · {{ quiz.total_marks }} marks</span>
+        </div>
+        <a href="{% url 'quiz_add_question' quiz.pk %}" class="btn btn-sm btn-outline">+ Questions</a>
+      </div>
+      {% empty %}
+      <p class="empty-state">No quizzes yet.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

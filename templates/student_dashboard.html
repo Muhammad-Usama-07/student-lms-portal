@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %}
+{% block title %}Student Dashboard — school_lms_portal{% endblock %}
+{% block page_title %}Student Overview{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+
+    <!-- Monthly Performance Chart -->
+    <div class="card">
+      <div class="card-title">Monthly Performance</div>
+      <div class="chart-wrap">
+        <div class="chart-area">
+          <div class="bar-group"><span class="bar-value">+12.2</span><div class="bar" style="height:70px;background:linear-gradient(180deg,#f5a623,#e67e00)"></div><span class="bar-label">Jan</span></div>
+          <div class="bar-group"><span class="bar-value">+23.5</span><div class="bar" style="height:100px;background:linear-gradient(180deg,#f48fb1,#e91e63)"></div><span class="bar-label">Feb</span></div>
+          <div class="bar-group"><span class="bar-value">+32.5</span><div class="bar" style="height:128px;background:linear-gradient(180deg,#ce93d8,#9c27b0)"></div><span class="bar-label">Mar</span></div>
+          <div class="bar-group"><span class="bar-value">+43.3</span><div class="bar" style="height:155px;background:linear-gradient(180deg,#9575cd,#5e35b1)"></div><span class="bar-label">Apr</span></div>
+          <div class="bar-group"><span class="bar-value">+55.5</span><div class="bar" style="height:190px;background:linear-gradient(180deg,#7e57c2,#311b92)"></div><span class="bar-label">Jun</span></div>
+        </div>
+        <svg class="trend-svg" viewBox="0 0 520 200" preserveAspectRatio="none">
+          <polyline points="48,148 148,118 248,90 348,62 448,28" fill="none" stroke="#aaa" stroke-width="2"/>
+          <circle cx="48"  cy="148" r="5" fill="#f5a623"/>
+          <circle cx="148" cy="118" r="5" fill="#f06292"/>
+          <circle cx="248" cy="90"  r="5" fill="#ba68c8"/>
+          <circle cx="348" cy="62"  r="5" fill="#7e57c2"/>
+          <circle cx="448" cy="28"  r="6" fill="#673ab7"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Recent Grades -->
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">Recent Grades</div>
+        <a href="{% url 'grades' %}" class="see-all">See All →</a>
+      </div>
+      <div class="grades-list">
+        {% for grade in grades|slice:":10" %}
+        <div class="grade-row">
+          <span class="grade-subject">{{ grade.course.name }}</span>
+          <span class="grade-badge {{ grade.grade_badge }}">{{ grade.score }}</span>
+        </div>
+        {% empty %}
+        <p class="empty-state">No grades yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><!-- /left-col -->
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-col">
+
+    <!-- Attendance Summary -->
+    <div class="card stat-card">
+      <div class="card-title">Attendance</div>
+      <div class="att-circle-wrap">
+        <svg class="att-circle" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#e0e0e0" stroke-width="10"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#6cc000" stroke-width="10"
+            stroke-dasharray="{{ att_pct|default:0 }} 100"
+            stroke-linecap="round" transform="rotate(-90 50 50)"/>
+          <text x="50" y="55" text-anchor="middle" font-size="18" font-weight="800" fill="#333">{{ att_pct }}%</text>
+        </svg>
+        <div class="att-stats">
+          <span class="att-stat present">✓ {{ present_att }} Present</span>
+          <span class="att-stat total">📋 {{ total_att }} Total</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Classes -->
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">Upcoming Classes</div>
+        <a href="{% url 'live_classes_list' %}" class="see-all">See All →</a>
+      </div>
+      {% for cls in upcoming %}
+      <div class="upcoming-item">
+        <div class="upcoming-info">
+          <strong>{{ cls.title }}</strong>
+          <span>{{ cls.course.code }} · {{ cls.date }} {{ cls.start_time }}</span>
+        </div>
+        <span class="status-badge status-{{ cls.status }}">{{ cls.get_status_display }}</span>
+      </div>
+      {% empty %}
+      <p class="empty-state">No upcoming classes.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Notifications -->
+    <div class="notif-card">
+      <div class="card-title-row">
+        <div class="notif-title">Notifications</div>
+        <a href="{% url 'notifications' %}" class="see-all">See All →</a>
+      </div>
+      <div class="notif-scroll">
+        {% for notif in notifications %}
+        <div class="notif-item notif-{{ notif.notif_type }}">
+          <strong>{{ notif.title }}</strong>
+          <p>{{ notif.message|truncatewords:20 }}</p>
+          <small>{{ notif.created_at|timesince }} ago</small>
+        </div>
+        {% empty %}
+        <p class="empty-state">No notifications.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><!-- /right-col -->
+
+</div><!-- /dashboard-grid -->
+{% endblock %}
