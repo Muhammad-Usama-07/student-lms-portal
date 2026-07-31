@@ -3,3 +3,4 @@
 ## Features 
 
 - AI teaching assistant 
+- Monthly Progress 
