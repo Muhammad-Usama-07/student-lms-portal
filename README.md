@@ -4,3 +4,4 @@
 
 - AI avatar teaching assistant 
 - Monthly Progress 
+- Grade prediction 
