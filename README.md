@@ -2,5 +2,5 @@
 
 ## Features 
 
-- AI teaching assistant 
+- AI avatar teaching assistant 
 - Monthly Progress 
