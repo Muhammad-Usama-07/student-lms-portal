@@ -9,3 +9,4 @@
 ## Tools
 - LLMs
 - APIs
+- STT
