@@ -6,6 +6,7 @@
 - Monthly Progress 
 - Grade prediction 
 - Attendance traction 
+- Performance monitoring 
 
 ## Tools
 - LLMs
