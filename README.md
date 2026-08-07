@@ -7,6 +7,8 @@
 - Grade prediction 
 - Attendance traction 
 - Performance monitoring 
+- Class material
+
 
 ## Tools
 - LLMs
