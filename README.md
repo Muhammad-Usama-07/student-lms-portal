@@ -4,6 +4,7 @@
 
 - AI avatar teaching assistant 
 - Monthly Progress 
+- Subject wise progress 
 - Grade prediction 
 - Attendance traction 
 - Performance monitoring 
