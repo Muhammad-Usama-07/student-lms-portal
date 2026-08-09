@@ -9,6 +9,7 @@
 - Attendance traction 
 - Performance monitoring 
 - Class material
+- Assignments
 
 
 ## Tools
