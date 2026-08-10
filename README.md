@@ -10,6 +10,7 @@
 - Performance monitoring 
 - Class material
 - Assignments
+- Behavioral score
 
 
 ## Tools
