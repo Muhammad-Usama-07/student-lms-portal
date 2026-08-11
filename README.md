@@ -17,3 +17,4 @@
 - LLMs
 - APIs
 - STT & TTS
+- Database
