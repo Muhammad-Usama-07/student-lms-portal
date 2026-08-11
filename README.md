@@ -16,4 +16,4 @@
 ## Tools
 - LLMs
 - APIs
-- STT
+- STT & TTS
