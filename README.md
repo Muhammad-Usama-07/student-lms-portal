@@ -11,7 +11,7 @@
 - Class material
 - Assignments
 - Behavioral score
-
+- Punctuality 
 
 ## Tools
 - LLMs
