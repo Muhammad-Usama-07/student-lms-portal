@@ -18,3 +18,4 @@
 - APIs
 - STT & TTS
 - Database
+- UX/UI
