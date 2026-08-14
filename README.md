@@ -18,4 +18,5 @@
 - APIs
 - STT & TTS
 - Database
-- UX/UI
+- Html, CSS, JS
+- 
