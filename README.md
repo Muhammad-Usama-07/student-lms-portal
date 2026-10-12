@@ -11,7 +11,8 @@
 - Class material
 - Assignments
 - Behavioral score
-- Punctuality 
+- Punctuality
+- report send on WhatsApp 
 
 ## Tools
 - LLMs
