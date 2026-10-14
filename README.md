@@ -14,6 +14,9 @@
 - Punctuality
 - report send on WhatsApp 
 - Student feedback 
+- AI insights 
+
+
 ## Tools
 - LLMs
 - APIs
