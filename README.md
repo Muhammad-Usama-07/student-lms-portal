@@ -15,6 +15,7 @@
 - report send on WhatsApp 
 - Student feedback 
 - AI insights 
+- Learning Game
 
 
 ## Tools
