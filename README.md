@@ -25,3 +25,6 @@
 - Database
 - Html, CSS, JS
 - 
+
+Packages
+- LangChain
