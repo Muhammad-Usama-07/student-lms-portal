@@ -29,3 +29,4 @@
 
 Packages
 - LangChain
+- Groq
