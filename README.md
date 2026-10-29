@@ -16,7 +16,7 @@
 - Student feedback 
 - AI insights 
 - Learning Game
-- Rewards 
+- Rewards learning 
 
 
 ## Tools
