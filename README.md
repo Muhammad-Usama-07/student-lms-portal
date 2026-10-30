@@ -30,3 +30,4 @@
 Packages
 - LangChain
 - Groq
+- FastAPI
